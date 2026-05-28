@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOUND BLAST — Year 9 Physics Revision</title>
+<link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d0d1a; --card:#141428; --card2:#1a1a35;
+    --yellow:#ffe94d; --cyan:#00e5ff; --pink:#ff4da6;
+    --green:#39ff85; --orange:#ff7c2a; --purple:#c084fc;
+    --text:#f0f0ff; --muted:#7070a0; --border:rgba(255,255,255,0.08);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;font-size:16px;min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:
+    radial-gradient(1px 1px at 10% 20%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 30% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 55% 15%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 70% 80%,rgba(255,255,255,.2) 0%,transparent 100%),
+    radial-gradient(1px 1px at 85% 40%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 20% 85%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 90% 10%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 45% 95%,rgba(255,255,255,.2) 0%,transparent 100%),
+    radial-gradient(2px 2px at 60% 50%,rgba(0,229,255,.15) 0%,transparent 100%),
+    radial-gradient(2px 2px at 25% 35%,rgba(255,233,77,.1) 0%,transparent 100%);
+    pointer-events:none;z-index:0}
+  .page-wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:20px 16px 80px}
+
+  /* HERO */
+  .hero{text-align:center;padding:40px 20px 30px}
+  .hero-tag{display:inline-block;background:var(--pink);color:#fff;font-family:'Boogaloo',cursive;font-size:13px;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:30px;margin-bottom:16px;animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+  .hero h1{font-family:'Boogaloo',cursive;font-size:clamp(3rem,10vw,5.5rem);line-height:1;color:var(--yellow);text-shadow:0 0 30px rgba(255,233,77,.5),4px 4px 0 var(--orange);margin-bottom:8px;letter-spacing:2px}
+  .hero-sub{font-size:1.1rem;color:var(--cyan);font-weight:700;letter-spacing:1px;margin-bottom:24px}
+  .score-bar{display:inline-flex;align-items:center;gap:20px;background:var(--card);border:2px solid var(--border);border-radius:50px;padding:10px 28px;font-family:'Boogaloo',cursive;font-size:1.2rem}
+  .score-val{color:var(--yellow);font-size:1.5rem}
+  .score-label{color:var(--muted);font-size:.85rem;font-family:'Nunito',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+
+  /* LEVEL CARDS */
+  .level{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:28px;position:relative;overflow:hidden}
+  .level::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:20px 20px 0 0}
+  .level-1::before{background:linear-gradient(90deg,var(--cyan),var(--purple))}
+  .level-2::before{background:linear-gradient(90deg,var(--yellow),var(--orange))}
+  .level-3::before{background:linear-gradient(90deg,var(--pink),var(--purple))}
+  .level-4::before{background:linear-gradient(90deg,var(--green),var(--cyan))}
+  .level-5::before{background:linear-gradient(90deg,var(--orange),var(--pink))}
+  .level-6::before{background:linear-gradient(90deg,var(--yellow),var(--green))}
+  .level-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .level-badge{font-family:'Boogaloo',cursive;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;white-space:nowrap}
+  .badge-cyan  {background:rgba(0,229,255,.15);color:var(--cyan);border:1px solid rgba(0,229,255,.3)}
+  .badge-yellow{background:rgba(255,233,77,.15);color:var(--yellow);border:1px solid rgba(255,233,77,.3)}
+  .badge-pink  {background:rgba(255,77,166,.15);color:var(--pink);border:1px solid rgba(255,77,166,.3)}
+  .badge-green {background:rgba(57,255,133,.15);color:var(--green);border:1px solid rgba(57,255,133,.3)}
+  .badge-orange{background:rgba(255,124,42,.15);color:var(--orange);border:1px solid rgba(255,124,42,.3)}
+  .badge-gold  {background:rgba(255,233,77,.2);color:var(--yellow);border:1px solid rgba(255,233,77,.5)}
+  .level-title{font-family:'Boogaloo',cursive;font-size:1.5rem;color:var(--text)}
+  .level-points{margin-left:auto;font-family:'Boogaloo',cursive;font-size:1rem;color:var(--muted)}
+
+  /* QUESTIONS */
+  .question{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+  .question:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+  .q-stem{font-size:1rem;font-weight:700;line-height:1.55;margin-bottom:14px;display:flex;gap:10px}
+  .q-num{font-family:'Boogaloo',cursive;font-size:1.1rem;color:var(--muted);min-width:28px}
+
+  /* TRUE/FALSE */
+  .tf-row{display:flex;gap:12px;margin-top:4px}
+  .tf-btn{flex:1;padding:12px;border-radius:12px;border:2px solid var(--border);background:var(--card2);color:var(--text);font-family:'Boogaloo',cursive;font-size:1.2rem;cursor:pointer;transition:all .18s ease}
+  .tf-btn:hover:not(:disabled){transform:scale(1.04)}
+  .tf-btn.true-btn:hover:not(:disabled){border-color:var(--green);background:rgba(57,255,133,.08)}
+  .tf-btn.false-btn:hover:not(:disabled){border-color:var(--pink);background:rgba(255,77,166,.08)}
+  .tf-btn.correct{border-color:var(--green)!important;background:rgba(57,255,133,.12)!important;color:var(--green)}
+  .tf-btn.wrong{border-color:var(--pink)!important;background:rgba(255,77,166,.12)!important;color:var(--pink);opacity:.7}
+  .tf-btn:disabled{cursor:default}
+
+  /* MULTIPLE CHOICE */
+  .mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+  @media(max-width:540px){.mc-grid{grid-template-columns:1fr}}
+  .mc-btn{background:var(--card2);border:2px solid var(--border);border-radius:12px;padding:12px 16px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;text-align:left;transition:all .18s ease;display:flex;align-items:flex-start;gap:10px}
+  .mc-btn:hover:not(:disabled){border-color:var(--cyan);background:rgba(0,229,255,.06);transform:translateY(-2px)}
+  .mc-btn .opt-letter{font-family:'Boogaloo',cursive;font-size:1rem;color:var(--cyan);min-width:20px}
+  .mc-btn.correct{border-color:var(--green)!important;background:rgba(57,255,133,.1)!important;color:var(--green)}
+  .mc-btn.wrong{border-color:var(--pink)!important;background:rgba(255,77,166,.1)!important;color:var(--pink);text-decoration:line-through;opacity:.7}
+  .mc-btn:disabled{cursor:default}
+
+  /* FEEDBACK */
+  .feedback{margin-top:12px;padding:12px 16px;border-radius:12px;font-size:.9rem;font-weight:700;display:none;animation:fadeIn .3s ease;line-height:1.6}
+  .feedback.show{display:block}
+  .feedback.correct{background:rgba(57,255,133,.08);color:var(--green);border:1px solid rgba(57,255,133,.25)}
+  .feedback.wrong{background:rgba(255,77,166,.08);color:var(--pink);border:1px solid rgba(255,77,166,.25)}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+  /* EQUATION WORKINGS BOX */
+  .workings{background:rgba(255,233,77,.05);border:1px solid rgba(255,233,77,.2);border-radius:10px;padding:12px 16px;margin-top:8px;font-size:.88rem;line-height:1.9;color:var(--yellow);font-weight:700}
+  .workings .step{display:block;padding-left:16px}
+  .workings .step::before{content:'→ ';color:var(--orange)}
+  .workings .final{display:block;margin-top:6px;padding:8px 12px;background:rgba(57,255,133,.1);border-radius:8px;color:var(--green);border-left:3px solid var(--green)}
+
+  /* DRAG AND DROP */
+  .drag-banks{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;min-height:52px;background:rgba(255,255,255,.03);border:1px dashed var(--border);border-radius:12px;padding:10px}
+  .drag-chip{background:var(--card2);border:2px solid rgba(0,229,255,.4);border-radius:30px;padding:6px 16px;font-weight:800;font-size:.88rem;color:var(--cyan);cursor:grab;user-select:none;transition:transform .15s,box-shadow .15s;white-space:nowrap}
+  .drag-chip:hover{transform:scale(1.06);box-shadow:0 4px 16px rgba(0,229,255,.2)}
+  .drag-chip.dragging{opacity:.4;cursor:grabbing}
+  .drop-rows{display:flex;flex-direction:column;gap:10px}
+  .drop-row{display:flex;align-items:center;gap:12px;background:var(--card2);border-radius:12px;padding:10px 14px}
+  .drop-label{font-weight:700;font-size:.9rem;min-width:0;flex:1;line-height:1.4}
+  .drop-zone{min-width:150px;min-height:38px;border:2px dashed rgba(255,255,255,.15);border-radius:30px;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--muted);padding:4px 12px;transition:border-color .2s}
+  .drop-zone.over{border-color:var(--cyan);background:rgba(0,229,255,.06)}
+  .drop-zone .drag-chip{margin:0;cursor:default}
+
+  /* BUTTONS */
+  .check-btn{margin-top:16px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:30px;padding:12px 28px;color:#0d0d1a;font-family:'Boogaloo',cursive;font-size:1.1rem;cursor:pointer;font-weight:700;transition:transform .15s,box-shadow .15s;letter-spacing:.5px}
+  .check-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,229,255,.3)}
+  .check-btn:disabled{opacity:.5;cursor:default;transform:none}
+
+  /* FILL IN BLANK */
+  .blank-input{display:inline-block;background:var(--card2);border:2px solid rgba(255,233,77,.4);border-radius:8px;padding:4px 10px;color:var(--yellow);font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;width:140px;text-align:center;transition:border-color .2s}
+  .blank-input:focus{outline:none;border-color:var(--yellow)}
+  .blank-input.correct{border-color:var(--green);color:var(--green);background:rgba(57,255,133,.08)}
+  .blank-input.wrong{border-color:var(--pink);color:var(--pink);background:rgba(255,77,166,.08)}
+  .blank-line{line-height:2.4;font-size:.95rem;font-weight:700}
+
+  /* SHORT ANSWER */
+  .short-answer{width:100%;background:var(--card2);border:2px solid var(--border);border-radius:12px;padding:12px 16px;color:var(--text);font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:600;resize:vertical;min-height:90px;margin-top:8px;transition:border-color .2s;line-height:1.5}
+  .short-answer:focus{outline:none;border-color:var(--purple)}
+  .reveal-btn{margin-top:10px;background:transparent;border:2px solid var(--purple);border-radius:30px;padding:8px 20px;color:var(--purple);font-family:'Boogaloo',cursive;font-size:1rem;cursor:pointer;transition:all .15s}
+  .reveal-btn:hover{background:rgba(192,132,252,.1)}
+  .answer-reveal{display:none;margin-top:10px;padding:14px 18px;background:rgba(192,132,252,.07);border:1px solid rgba(192,132,252,.3);border-radius:12px;font-size:.9rem;color:var(--purple);font-weight:700;line-height:1.7}
+  .answer-reveal.show{display:block;animation:fadeIn .3s ease}
+  .answer-reveal .mark{display:inline-block;background:rgba(192,132,252,.2);border-radius:4px;padding:1px 7px;font-size:.8rem;margin-right:6px}
+
+  /* EQUATION CHALLENGE */
+  .eq-box{background:var(--card2);border:1px solid rgba(255,233,77,.2);border-radius:14px;padding:16px 20px;margin:10px 0}
+  .eq-given{font-size:.9rem;color:var(--muted);font-weight:700;margin-bottom:8px}
+  .eq-given span{color:var(--yellow)}
+  .eq-formula{font-family:'Boogaloo',cursive;font-size:1.3rem;color:var(--cyan);margin-bottom:12px;letter-spacing:.5px}
+  .eq-input-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .eq-input{background:var(--bg);border:2px solid rgba(0,229,255,.3);border-radius:10px;padding:8px 14px;color:var(--cyan);font-family:'Boogaloo',cursive;font-size:1.1rem;width:120px;text-align:center;transition:border-color .2s}
+  .eq-input:focus{outline:none;border-color:var(--cyan)}
+  .eq-input.correct{border-color:var(--green);color:var(--green)}
+  .eq-input.wrong{border-color:var(--pink);color:var(--pink)}
+  .eq-unit{color:var(--muted);font-weight:700;font-size:.9rem}
+
+  /* SCOREBOARD */
+  .final-score{text-align:center;background:var(--card);border:2px solid rgba(255,233,77,.2);border-radius:20px;padding:36px 28px;margin-top:28px;display:none}
+  .final-score.show{display:block;animation:fadeIn .5s ease}
+  .final-score h2{font-family:'Boogaloo',cursive;font-size:2.5rem;color:var(--yellow);text-shadow:0 0 20px rgba(255,233,77,.4);margin-bottom:8px}
+  .rank-badge{display:inline-block;font-family:'Boogaloo',cursive;font-size:1.8rem;padding:8px 28px;border-radius:50px;margin:16px 0}
+  .rank-s{background:linear-gradient(135deg,#ffe94d,#ff7c2a);color:#0d0d1a}
+  .rank-a{background:linear-gradient(135deg,#00e5ff,#c084fc);color:#0d0d1a}
+  .rank-b{background:linear-gradient(135deg,#39ff85,#00e5ff);color:#0d0d1a}
+  .rank-c{background:linear-gradient(135deg,#ff4da6,#c084fc);color:#fff}
+  .final-msg{font-size:1rem;color:var(--muted);font-weight:700;margin-top:8px}
+  .final-breakdown{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:20px 0}
+  .breakdown-pill{background:var(--card2);border:1px solid var(--border);border-radius:30px;padding:8px 20px;font-family:'Boogaloo',cursive;font-size:1rem}
+  .confetti-btn{margin-top:20px;background:linear-gradient(135deg,var(--yellow),var(--orange));border:none;border-radius:30px;padding:14px 32px;color:#0d0d1a;font-family:'Boogaloo',cursive;font-size:1.2rem;cursor:pointer;transition:transform .15s}
+  .confetti-btn:hover{transform:scale(1.05)}
+
+  /* POINTS FLASH */
+  .points-flash{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Boogaloo',cursive;font-size:3rem;pointer-events:none;animation:pointsFly .9s ease forwards;z-index:999}
+  @keyframes pointsFly{0%{opacity:1;transform:translate(-50%,-50%) scale(.5)}50%{opacity:1;transform:translate(-50%,-80%) scale(1.2)}100%{opacity:0;transform:translate(-50%,-110%) scale(1)}}
+
+  .hint{font-size:.82rem;color:var(--muted);font-style:italic;margin-top:6px;font-weight:600}
+  .section-note{font-size:.9rem;color:var(--muted);margin-bottom:18px;font-weight:700;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">🎮 Year 9 Physics Revision</div>
+  <h1>SOUND BLAST</h1>
+  <div class="hero-sub">Complete every level. Earn every point. Become a Sound Master.</div>
+  <div class="score-bar">
+    <div><div class="score-label">Score</div><div class="score-val" id="scoreDisplay">0</div></div>
+    <div style="width:1px;height:40px;background:var(--border)"></div>
+    <div><div class="score-label">Max</div><div class="score-val" id="maxDisplay">36</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     LEVEL 1 — TRUE OR FALSE  (8 pts)
+══════════════════════════════════════════ -->
+<div class="level level-1">
+  <div class="level-header">
+    <div class="level-badge badge-cyan">⚡ Level 1</div>
+    <div class="level-title">True or False?</div>
+    <div class="level-points">8 pts</div>
+  </div>
+
+  <div class="question" data-id="tf1">
+    <div class="q-stem"><span class="q-num">1.</span><span>Sound waves require a medium (matter) to travel through.</span></div>
+    <div class="tf-row">
+      <button class="tf-btn true-btn" onclick="checkTF(this,'true','true')">👍 TRUE</button>
+      <button class="tf-btn false-btn" onclick="checkTF(this,'false','true')">👎 FALSE</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="true">
+      <span class="step">Sound is a <strong>mechanical wave</strong> — it transfers energy by making particles vibrate.</span>
+      <span class="step">Particles only exist in matter (solids, liquids, gases) — not in a vacuum.</span>
+      <span class="final">✅ TRUE — No medium = no particles = no sound. This is why space is silent.</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="tf2">
+    <div class="q-stem"><span class="q-num">2.</span><span>In a longitudinal wave, particles move at right angles to the direction of energy transfer.</span></div>
+    <div class="tf-row">
+      <button class="tf-btn true-btn" onclick="checkTF(this,'true','false')">👍 TRUE</button>
+      <button class="tf-btn false-btn" onclick="checkTF(this,'false','false')">👎 FALSE</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="false">
+      <span class="step">In a <strong>longitudinal wave</strong>, particles vibrate <strong>parallel</strong> to (in the same direction as) energy transfer.</span>
+      <span class="step">Moving <em>at right angles</em> describes a <strong>transverse</strong> wave (like a wave on a rope).</span>
+      <span class="final">✅ FALSE — Sound is longitudinal: particles vibrate back and forth, the same direction the wave travels.</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="tf3">
+    <div class="q-stem"><span class="q-num">3.</span><span>A sound with a higher frequency will be perceived as louder.</span></div>
+    <div class="tf-row">
+      <button class="tf-btn true-btn" onclick="checkTF(this,'true','false')">👍 TRUE</button>
+      <button class="tf-btn false-btn" onclick="checkTF(this,'false','false')">👎 FALSE</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="false">
+      <span class="step"><strong>Frequency</strong> → determines <strong>pitch</strong> (how high or low a note sounds).</span>
+      <span class="step"><strong>Amplitude</strong> → determines <strong>loudness</strong> (how much energy the wave carries).</span>
+      <span class="final">✅ FALSE — Higher frequency = higher pitch, NOT louder. Don't mix these two up!</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="tf4">
+    <div class="q-stem"><span class="q-num">4.</span><span>Sound travels faster in steel than in water or air.</span></div>
+    <div class="tf-row">
+      <button class="tf-btn true-btn" onclick="checkTF(this,'true','true')">👍 TRUE</button>
+      <button class="tf-btn false-btn" onclick="checkTF(this,'false','true')">👎 FALSE</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="true">
+      <span class="step">Speed of sound: Air ≈ 340 m/s | Water ≈ 1500 m/s | Steel ≈ 5960 m/s</span>
+      <span class="step">In solids, particles are tightly packed — vibrations pass between them much faster.</span>
+      <span class="final">✅ TRUE — Sound travels fastest in solids because the particles are closest together.</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="tf5">
+    <div class="q-stem"><span class="q-num">5.</span><span>An echo occurs when a sound wave is reflected off a hard surface.</span></div>
+    <div class="tf-row">
+      <button class="tf-btn true-btn" onclick="checkTF(this,'true','true')">👍 TRUE</button>
+      <button class="tf-btn false-btn" onclick="checkTF(this,'false','true')">👎 FALSE</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="true">
+      <span class="step">When a sound wave hits a hard, flat surface, it <strong>bounces back</strong> toward the source.</span>
+      <span class="step">If enough time passes before the reflected wave arrives, we perceive it as a separate sound — an echo.</span>
+      <span class="final">✅ TRUE — Echoes are simply reflected sound waves.</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="tf6">
+    <div class="q-stem"><span class="q-num">6.</span><span>Ultrasound has a frequency above 20 000 Hz — beyond the upper limit of human hearing.</span></div>
+    <div class="tf-row">
+      <button class="tf-btn true-btn" onclick="checkTF(this,'true','true')">👍 TRUE</button>
+      <button class="tf-btn false-btn" onclick="checkTF(this,'false','true')">👎 FALSE</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="true">
+      <span class="step">Human hearing range: approximately 20 Hz – 20 000 Hz.</span>
+      <span class="step">"Ultra" literally means <em>beyond</em>. Ultrasound sits above this range — dogs, bats and dolphins can hear it; we can't.</span>
+      <span class="final">✅ TRUE — Ultrasound is inaudible to humans because its frequency is too high.</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="tf7">
+    <div class="q-stem"><span class="q-num">7.</span><span>Sound travels faster in seawater than in fresh water, because seawater is denser.</span></div>
+    <div class="tf-row">
+      <button class="tf-btn true-btn" onclick="checkTF(this,'true','true')">👍 TRUE</button>
+      <button class="tf-btn false-btn" onclick="checkTF(this,'false','true')">👎 FALSE</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="true">
+      <span class="step">Seawater contains dissolved salt, making it denser than fresh water.</span>
+      <span class="step">Denser liquid → particles closer together → vibrations transferred between particles more efficiently.</span>
+      <span class="step">Speed of sound: Fresh water ≈ 1480 m/s | Seawater ≈ 1520 m/s</span>
+      <span class="final">✅ TRUE — The higher density of seawater allows sound to travel slightly faster.</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="tf8">
+    <div class="q-stem"><span class="q-num">8.</span><span>Increasing the amplitude of a sound wave will increase its frequency.</span></div>
+    <div class="tf-row">
+      <button class="tf-btn true-btn" onclick="checkTF(this,'true','false')">👍 TRUE</button>
+      <button class="tf-btn false-btn" onclick="checkTF(this,'false','false')">👎 FALSE</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="false">
+      <span class="step"><strong>Amplitude</strong> and <strong>frequency</strong> are completely independent properties of a wave.</span>
+      <span class="step">Amplitude = height of the wave = loudness. Frequency = number of waves per second = pitch.</span>
+      <span class="step">You can have a loud, low-pitched sound (high amplitude, low frequency) — like a bass drum.</span>
+      <span class="final">✅ FALSE — Amplitude and frequency are independent. Changing one does NOT change the other.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     LEVEL 2 — MULTIPLE CHOICE  (12 pts)
+══════════════════════════════════════════ -->
+<div class="level level-2">
+  <div class="level-header">
+    <div class="level-badge badge-yellow">🧠 Level 2</div>
+    <div class="level-title">Pick the Right Answer</div>
+    <div class="level-points">12 pts</div>
+  </div>
+  <p class="section-note">2 points each. Read carefully — every distractor is there for a reason.</p>
+
+  <div class="question" data-id="mc1">
+    <div class="q-stem"><span class="q-num">9.</span><span>A guitar string is plucked harder. What change does this produce in the sound?</span></div>
+    <div class="mc-grid">
+      <button class="mc-btn" onclick="checkMC(this,'A','C')"><span class="opt-letter">A</span>The frequency increases</button>
+      <button class="mc-btn" onclick="checkMC(this,'B','C')"><span class="opt-letter">B</span>The wavelength decreases</button>
+      <button class="mc-btn" onclick="checkMC(this,'C','C')"><span class="opt-letter">C</span>The amplitude increases, making the sound louder</button>
+      <button class="mc-btn" onclick="checkMC(this,'D','C')"><span class="opt-letter">D</span>The wave travels faster through the air</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="C">
+      <span class="step">Plucking harder puts more energy into the string → bigger vibration → larger <strong>amplitude</strong>.</span>
+      <span class="step">Amplitude controls <strong>loudness</strong> — more amplitude = louder sound.</span>
+      <span class="step">❌ A: Frequency depends on the string's length/tension, not how hard you pluck.</span>
+      <span class="step">❌ D: The speed of sound in air stays the same (~340 m/s) regardless of amplitude.</span>
+      <span class="final">✅ C — More force → bigger amplitude → louder sound. Frequency and speed are unchanged.</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="mc2">
+    <div class="q-stem"><span class="q-num">10.</span><span>Which of the following correctly describes a region of rarefaction in a sound wave?</span></div>
+    <div class="mc-grid">
+      <button class="mc-btn" onclick="checkMC(this,'A','D')"><span class="opt-letter">A</span>Particles are pushed tightly together and pressure is high</button>
+      <button class="mc-btn" onclick="checkMC(this,'B','D')"><span class="opt-letter">B</span>Energy is stored but not transferred</button>
+      <button class="mc-btn" onclick="checkMC(this,'C','D')"><span class="opt-letter">C</span>Particles move permanently in the direction of the wave</button>
+      <button class="mc-btn" onclick="checkMC(this,'D','D')"><span class="opt-letter">D</span>Particles are spread further apart and pressure is lower than normal</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="D">
+      <span class="step"><strong>Compression</strong> = particles bunched up, higher pressure. Think of squeezing a spring together.</span>
+      <span class="step"><strong>Rarefaction</strong> = particles spread out, lower pressure. Think of stretching a spring apart.</span>
+      <span class="step">❌ A describes a compression, not rarefaction.</span>
+      <span class="step">❌ C is wrong — particles in a sound wave vibrate back and forth but don't travel with the wave permanently.</span>
+      <span class="final">✅ D — Rarefaction = particles spread apart, lower than normal pressure.</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="mc3">
+    <div class="q-stem"><span class="q-num">11.</span><span>Why does sound travel faster in seawater than in fresh water?</span></div>
+    <div class="mc-grid">
+      <button class="mc-btn" onclick="checkMC(this,'A','A')"><span class="opt-letter">A</span>Seawater is denser — particles are closer together and transmit vibrations more efficiently</button>
+      <button class="mc-btn" onclick="checkMC(this,'B','A')"><span class="opt-letter">B</span>Seawater is always warmer, so particles move faster</button>
+      <button class="mc-btn" onclick="checkMC(this,'C','A')"><span class="opt-letter">C</span>Salt particles absorb the wave, causing it to speed up</button>
+      <button class="mc-btn" onclick="checkMC(this,'D','A')"><span class="opt-letter">D</span>Sound always travels faster in salt water because salt conducts electricity better</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="A">
+      <span class="step">Dissolved salt increases seawater's <strong>density</strong> — particles are slightly closer together than in fresh water.</span>
+      <span class="step">Closer particles = faster transfer of vibrations = faster wave speed.</span>
+      <span class="step">❌ B: Temperature does affect speed, but this isn't always true — seawater isn't always warmer.</span>
+      <span class="step">❌ D: Electrical conductivity is completely unrelated to sound transmission.</span>
+      <span class="final">✅ A — Greater density → particles closer → vibrations pass between them more quickly.</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="mc4">
+    <div class="q-stem"><span class="q-num">12.</span><span>A student claps once while standing 170 m from a cliff face. How long after the clap will they hear the echo? (Speed of sound in air = 340 m/s)</span></div>
+    <div class="mc-grid">
+      <button class="mc-btn" onclick="checkMC(this,'A','B')"><span class="opt-letter">A</span>0.5 seconds</button>
+      <button class="mc-btn" onclick="checkMC(this,'B','B')"><span class="opt-letter">B</span>1.0 second</button>
+      <button class="mc-btn" onclick="checkMC(this,'C','B')"><span class="opt-letter">C</span>2.0 seconds</button>
+      <button class="mc-btn" onclick="checkMC(this,'D','B')"><span class="opt-letter">D</span>0.25 seconds</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="B">
+      <span class="step">The sound must travel TO the cliff AND back — total distance = 170 × 2 = <strong>340 m</strong></span>
+      <span class="step">Using: time = distance ÷ speed</span>
+      <span class="step">time = 340 ÷ 340 = <strong>1.0 second</strong></span>
+      <span class="step">❌ A (0.5 s): Common mistake — only counting one-way distance (170 m). The sound travels there AND back!</span>
+      <span class="final">✅ B — Total distance is 340 m (there and back). 340 ÷ 340 = 1.0 second.</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="mc5">
+    <div class="q-stem"><span class="q-num">13.</span><span>In an ultrasound scan, what happens when the sound pulse reaches a boundary between two different types of tissue?</span></div>
+    <div class="mc-grid">
+      <button class="mc-btn" onclick="checkMC(this,'A','C')"><span class="opt-letter">A</span>The pulse is absorbed completely and disappears</button>
+      <button class="mc-btn" onclick="checkMC(this,'B','C')"><span class="opt-letter">B</span>The pulse speeds up and passes straight through</button>
+      <button class="mc-btn" onclick="checkMC(this,'C','C')"><span class="opt-letter">C</span>Some of the pulse is reflected back and some continues through</button>
+      <button class="mc-btn" onclick="checkMC(this,'D','C')"><span class="opt-letter">D</span>The pulse changes direction completely and travels sideways</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="C">
+      <span class="step">At a boundary between materials of different density (e.g. muscle and kidney), a sound wave <strong>partially reflects</strong> and <strong>partially transmits</strong>.</span>
+      <span class="step">The reflected pulse returns to the probe. The time delay tells the machine how deep the boundary is.</span>
+      <span class="step">The transmitted portion continues and reflects off the next boundary — building up a full image layer by layer.</span>
+      <span class="final">✅ C — Partial reflection at each boundary is exactly what allows ultrasound to map internal structures.</span>
+    </div>
+  </div>
+
+  <div class="question" data-id="mc6">
+    <div class="q-stem"><span class="q-num">14.</span><span>Which wave property directly determines the pitch of a sound?</span></div>
+    <div class="mc-grid">
+      <button class="mc-btn" onclick="checkMC(this,'A','D')"><span class="opt-letter">A</span>Amplitude</button>
+      <button class="mc-btn" onclick="checkMC(this,'B','D')"><span class="opt-letter">B</span>Wave speed</button>
+      <button class="mc-btn" onclick="checkMC(this,'C','D')"><span class="opt-letter">C</span>The medium the sound travels through</button>
+      <button class="mc-btn" onclick="checkMC(this,'D','D')"><span class="opt-letter">D</span>Frequency</button>
+    </div>
+    <div class="feedback"></div>
+    <div class="workings" style="display:none" data-show="D">
+      <span class="step"><strong>Frequency</strong> = number of complete waves per second (Hz).</span>
+      <span class="step">High frequency → many waves per second → high pitched sound (e.g. a whistle ~2000 Hz).</span>
+      <span class="step">Low frequency → fewer waves per second → low pitched sound (e.g. a bass note ~80 Hz).</span>
+      <span class="step">❌ A: Amplitude → loudness. ❌ B: Wave speed doesn't directly determine perceived pitch.</span>
+      <span class="final">✅ D — Frequency is the direct cause of pitch. Higher frequency = higher pitch.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     LEVEL 3 — DRAG AND DROP  (7 pts)
+══════════════════════════════════════════ -->
+<div class="level level-3">
+  <div class="level-header">
+    <div class="level-badge badge-pink">🎯 Level 3</div>
+    <div class="level-title">Match It Up</div>
+    <div class="level-points">7 pts</div>
+  </div>
+  <p class="section-note">Drag each term from the bank into the correct definition. All 7 must be placed before you can check.</p>
+
+  <div class="drag-area">
+    <div class="drag-banks" id="chipBank">
+      <div class="drag-chip" draggable="true" data-word="Amplitude">Amplitude</div>
+      <div class="drag-chip" draggable="true" data-word="Frequency">Frequency</div>
+      <div class="drag-chip" draggable="true" data-word="Wavelength">Wavelength</div>
+      <div class="drag-chip" draggable="true" data-word="Compression">Compression</div>
+      <div class="drag-chip" draggable="true" data-word="Rarefaction">Rarefaction</div>
+      <div class="drag-chip" draggable="true" data-word="Echo">Echo</div>
+      <div class="drag-chip" draggable="true" data-word="Ultrasound">Ultrasound</div>
+    </div>
+    <div class="drop-rows">
+      <div class="drop-row">
+        <div class="drop-label">The distance between two identical points on consecutive waves (e.g. crest to crest)</div>
+        <div class="drop-zone" data-answer="Wavelength"><span style="color:var(--muted);font-size:.8rem">drop here</span></div>
+      </div>
+      <div class="drop-row">
+        <div class="drop-label">The number of complete waves passing a point per second, measured in Hz</div>
+        <div class="drop-zone" data-answer="Frequency"><span style="color:var(--muted);font-size:.8rem">drop here</span></div>
+      </div>
+      <div class="drop-row">
+        <div class="drop-label">The maximum displacement of a particle from its rest position — determines loudness</div>
+        <div class="drop-zone" data-answer="Amplitude"><span style="color:var(--muted);font-size:.8rem">drop here</span></div>
+      </div>
+      <div class="drop-row">
+        <div class="drop-label">A region in a sound wave where particles are pushed closely together and pressure is high</div>
+        <div class="drop-zone" data-answer="Compression"><span style="color:var(--muted);font-size:.8rem">drop here</span></div>
+      </div>
+      <div class="drop-row">
+        <div class="drop-label">A region where particles are spread apart and pressure is lower than normal</div>
+        <div class="drop-zone" data-answer="Rarefaction"><span style="color:var(--muted);font-size:.8rem">drop here</span></div>
+      </div>
+      <div class="drop-row">
+        <div class="drop-label">A reflected sound wave heard after the original — used in SONAR and echolocation</div>
+        <div class="drop-zone" data-answer="Echo"><span style="color:var(--muted);font-size:.8rem">drop here</span></div>
+      </div>
+      <div class="drop-row">
+        <div class="drop-label">Sound with a frequency above 20 000 Hz — beyond human hearing range</div>
+        <div class="drop-zone" data-answer="Ultrasound"><span style="color:var(--muted);font-size:.8rem">drop here</span></div>
+      </div>
+    </div>
+    <button class="check-btn" id="dragCheckBtn" onclick="checkDrag()">Check Matches ⚡</button>
+    <div class="feedback" id="fb-drag"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     LEVEL 4 — FILL IN THE BLANKS  (9 pts)
+══════════════════════════════════════════ -->
+<div class="level level-4">
+  <div class="level-header">
+    <div class="level-badge badge-green">✏️ Level 4</div>
+    <div class="level-title">Fill in the Blanks</div>
+    <div class="level-points">9 pts</div>
+  </div>
+  <p class="section-note">One word per blank. Press Check when all blanks are filled.</p>
+
+  <div class="question">
+    <div class="blank-line">15. Sound is produced when an object <input class="blank-input" id="b1" placeholder="?" data-answer="vibrates" data-alts="vibrate,oscillates,shakes"> and disturbs the particles around it.</div>
+  </div>
+  <div class="question">
+    <div class="blank-line">16. A sound wave with a large amplitude will sound <input class="blank-input" id="b2" placeholder="?" data-answer="loud" data-alts="louder,loudly"> to a listener.</div>
+  </div>
+  <div class="question">
+    <div class="blank-line">17. Sound travels as a wave of <input class="blank-input" id="b3" placeholder="?" data-answer="compressions" data-alts="compression"> and rarefactions through a medium.</div>
+  </div>
+  <div class="question">
+    <div class="blank-line">18. SONAR works by sending out a sound <input class="blank-input" id="b4" placeholder="?" data-answer="pulse" data-alts="pulses,signal"> and measuring the time for the echo to return.</div>
+  </div>
+  <div class="question">
+    <div class="blank-line">19. Bats use <input class="blank-input" id="b5" placeholder="?" data-answer="echolocation" data-alts="echo location"> to navigate and hunt in complete darkness.</div>
+  </div>
+  <div class="question">
+    <div class="blank-line">20. The wave equation is: wave speed = frequency × <input class="blank-input" id="b6" placeholder="?" data-answer="wavelength" data-alts="wave length"> .</div>
+  </div>
+  <div class="question">
+    <div class="blank-line">21. Sound cannot travel through a <input class="blank-input" id="b7" placeholder="?" data-answer="vacuum" data-alts="vaccuum,vacum"> because there are no particles to vibrate.</div>
+  </div>
+  <div class="question">
+    <div class="blank-line">22. A high-pitched sound has a <input class="blank-input" id="b8" placeholder="?" data-answer="high" data-alts="large,greater,higher"> frequency.</div>
+  </div>
+  <div class="question">
+    <div class="blank-line">23. When a sound wave reflects off a hard surface, the reflected wave we hear is called an <input class="blank-input" id="b9" placeholder="?" data-answer="echo" data-alts="echoes"> .</div>
+  </div>
+
+  <button class="check-btn" style="margin-top:20px" onclick="checkBlanks()">Check Blanks ✏️</button>
+  <div class="feedback" id="fb-blanks"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     LEVEL 5 — EQUATION CHALLENGE  (no change to existing score — bonus tracked separately)
+══════════════════════════════════════════ -->
+<div class="level level-5">
+  <div class="level-header">
+    <div class="level-badge badge-orange">🔢 Level 5</div>
+    <div class="level-title">Equation Challenge</div>
+    <div class="level-points">No score — self-check</div>
+  </div>
+  <p class="section-note">Use <strong>v = f × λ</strong> to solve each problem. Type your answer, then click Reveal to see full working. Check your own answer carefully!</p>
+
+  <!-- EQ 1 -->
+  <div class="question">
+    <div class="q-stem"><span class="q-num">24.</span><span>A sound wave has a frequency of 256 Hz and a wavelength of 1.33 m. Calculate its wave speed.</span></div>
+    <div class="eq-box">
+      <div class="eq-given">Given: <span>f = 256 Hz</span> &nbsp;|&nbsp; <span>λ = 1.33 m</span> &nbsp;|&nbsp; Find: <span>v = ?</span></div>
+      <div class="eq-formula">v = f × λ</div>
+      <div class="eq-input-row">
+        <span style="font-weight:700;color:var(--muted)">v =</span>
+        <input class="eq-input" id="eq1" placeholder="?" type="number" step="any">
+        <span class="eq-unit">m/s</span>
+      </div>
+    </div>
+    <button class="reveal-btn" onclick="toggleReveal(this)">👁 Reveal Full Working</button>
+    <div class="answer-reveal">
+      <strong>Formula:</strong> v = f × λ<br><br>
+      <strong>Substitute:</strong> v = 256 × 1.33<br><br>
+      <strong>Calculate:</strong> v = <span style="color:var(--green);font-size:1.1rem">340.48 m/s</span><br><br>
+      <em style="color:var(--muted)">📌 This is very close to the speed of sound in air at room temperature (~340 m/s) — a good reality check!</em>
+    </div>
+  </div>
+
+  <!-- EQ 2 -->
+  <div class="question">
+    <div class="q-stem"><span class="q-num">25.</span><span>A sound wave travels at 1500 m/s in seawater and has a wavelength of 0.75 m. Calculate its frequency.</span></div>
+    <div class="eq-box">
+      <div class="eq-given">Given: <span>v = 1500 m/s</span> &nbsp;|&nbsp; <span>λ = 0.75 m</span> &nbsp;|&nbsp; Find: <span>f = ?</span></div>
+      <div class="eq-formula">v = f × λ &nbsp;→&nbsp; f = v ÷ λ</div>
+      <div class="eq-input-row">
+        <span style="font-weight:700;color:var(--muted)">f =</span>
+        <input class="eq-input" id="eq2" placeholder="?" type="number" step="any">
+        <span class="eq-unit">Hz</span>
+      </div>
+    </div>
+    <button class="reveal-btn" onclick="toggleReveal(this)">👁 Reveal Full Working</button>
+    <div class="answer-reveal">
+      <strong>Formula:</strong> v = f × λ &nbsp; → &nbsp; rearrange to find f: &nbsp; f = v ÷ λ<br><br>
+      <strong>Substitute:</strong> f = 1500 ÷ 0.75<br><br>
+      <strong>Calculate:</strong> f = <span style="color:var(--green);font-size:1.1rem">2000 Hz</span><br><br>
+      <em style="color:var(--muted)">📌 Rearranging tip: if v = f × λ, cover up what you want to find. f = v ÷ λ, λ = v ÷ f.</em>
+    </div>
+  </div>
+
+  <!-- EQ 3 — SONAR depth -->
+  <div class="question">
+    <div class="q-stem"><span class="q-num">26.</span><span>A SONAR pulse is sent from a ship and the echo returns 2.4 seconds later. Sound travels at 1500 m/s in seawater. Calculate the depth of the ocean below the ship.</span></div>
+    <div class="hint">💡 Hint: The sound travels DOWN to the seabed AND back UP. The depth is only half the total distance.</div>
+    <div class="eq-box">
+      <div class="eq-given">Given: <span>time = 2.4 s</span> &nbsp;|&nbsp; <span>speed = 1500 m/s</span> &nbsp;|&nbsp; Find: <span>depth = ?</span></div>
+      <div class="eq-formula">distance = speed × time &nbsp;→&nbsp; depth = distance ÷ 2</div>
+      <div class="eq-input-row">
+        <span style="font-weight:700;color:var(--muted)">depth =</span>
+        <input class="eq-input" id="eq3" placeholder="?" type="number" step="any">
+        <span class="eq-unit">m</span>
+      </div>
+    </div>
+    <button class="reveal-btn" onclick="toggleReveal(this)">👁 Reveal Full Working</button>
+    <div class="answer-reveal">
+      <strong>Step 1 — Total distance travelled by sound:</strong><br>
+      distance = speed × time = 1500 × 2.4 = <strong>3600 m</strong><br><br>
+      <strong>Step 2 — Depth (sound only travels one way to reach the seabed):</strong><br>
+      depth = 3600 ÷ 2 = <span style="color:var(--green);font-size:1.1rem">1800 m</span><br><br>
+      <em style="color:var(--muted)">📌 The most common mistake here is forgetting to halve the total distance. The echo path is there AND back — depth is only one way!</em>
+    </div>
+  </div>
+
+  <!-- EQ 4 — find wavelength -->
+  <div class="question">
+    <div class="q-stem"><span class="q-num">27.</span><span>A bat produces ultrasound at a frequency of 50 000 Hz. Sound travels at 340 m/s in air. Calculate the wavelength of this sound.</span></div>
+    <div class="eq-box">
+      <div class="eq-given">Given: <span>f = 50 000 Hz</span> &nbsp;|&nbsp; <span>v = 340 m/s</span> &nbsp;|&nbsp; Find: <span>λ = ?</span></div>
+      <div class="eq-formula">v = f × λ &nbsp;→&nbsp; λ = v ÷ f</div>
+      <div class="eq-input-row">
+        <span style="font-weight:700;color:var(--muted)">λ =</span>
+        <input class="eq-input" id="eq4" placeholder="?" type="number" step="any">
+        <span class="eq-unit">m</span>
+      </div>
+    </div>
+    <button class="reveal-btn" onclick="toggleReveal(this)">👁 Reveal Full Working</button>
+    <div class="answer-reveal">
+      <strong>Formula:</strong> v = f × λ &nbsp; → &nbsp; rearrange: λ = v ÷ f<br><br>
+      <strong>Substitute:</strong> λ = 340 ÷ 50 000<br><br>
+      <strong>Calculate:</strong> λ = <span style="color:var(--green);font-size:1.1rem">0.0068 m</span> (or 6.8 mm)<br><br>
+      <em style="color:var(--muted)">📌 Notice how tiny this wavelength is! Short wavelengths are better at detecting small objects — this is why ultrasound at high frequency gives detailed images.</em>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     LEVEL 6 — SHORT ANSWER  (self-assessed)
+══════════════════════════════════════════ -->
+<div class="level level-6">
+  <div class="level-header">
+    <div class="level-badge badge-gold">🔥 Level 6</div>
+    <div class="level-title">Boss Level — Show What You Know</div>
+    <div class="level-points">Self-assessed</div>
+  </div>
+  <p class="section-note">Write your best answer, then reveal the detailed model answer. Be honest with yourself — this is how you actually learn!</p>
+
+  <div class="question">
+    <div class="q-stem"><span class="q-num">28.</span><span>Explain, using particle theory, why sound cannot travel through a vacuum but CAN travel through a solid, liquid, or gas. <em style="color:var(--muted)">[3 marks]</em></span></div>
+    <textarea class="short-answer" placeholder="Write your answer here..."></textarea>
+    <button class="reveal-btn" onclick="toggleReveal(this)">👁 Reveal Model Answer</button>
+    <div class="answer-reveal">
+      <span class="mark">Mark 1</span> Sound is a mechanical wave — it transfers energy by causing particles to <strong>vibrate</strong>.<br>
+      <span class="mark">Mark 2</span> In a solid, liquid, or gas, there are particles present that can be made to vibrate and pass the energy along from one particle to the next.<br>
+      <span class="mark">Mark 3</span> In a vacuum there are <strong>no particles at all</strong> — with nothing to vibrate, the wave has no way to transfer energy, so sound simply cannot travel through it.<br><br>
+      <em style="color:var(--muted)">💡 Common mistake: saying "sound needs air." It actually needs any medium — it travels through water and steel too!</em>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-stem"><span class="q-num">29.</span><span>Describe how a bat uses echolocation to locate a moth flying in complete darkness. <em style="color:var(--muted)">[3 marks]</em></span></div>
+    <textarea class="short-answer" placeholder="Write your answer here..."></textarea>
+    <button class="reveal-btn" onclick="toggleReveal(this)">👁 Reveal Model Answer</button>
+    <div class="answer-reveal">
+      <span class="mark">Mark 1</span> The bat emits short <strong>pulses</strong> of ultrasound (high-frequency sound above 20 000 Hz) from its mouth or nose.<br>
+      <span class="mark">Mark 2</span> The pulse travels through the air and <strong>reflects</strong> off the moth, returning as an echo to the bat's large ears.<br>
+      <span class="mark">Mark 3</span> The bat detects the <strong>time delay</strong> between emitting the pulse and receiving the echo — the shorter the delay, the closer the moth. The brain processes this to pinpoint the exact location and distance of the prey.<br><br>
+      <em style="color:var(--muted)">💡 Bats can do this so fast and accurately they can even catch insects mid-flight in total darkness.</em>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-stem"><span class="q-num">30.</span><span>A doctor uses ultrasound to image a patient's kidney. Explain how the machine produces a detailed image. Refer to what is emitted, what happens at tissue boundaries, and how the image is formed. <em style="color:var(--muted)">[4 marks]</em></span></div>
+    <textarea class="short-answer" placeholder="Write your answer here..."></textarea>
+    <button class="reveal-btn" onclick="toggleReveal(this)">👁 Reveal Model Answer</button>
+    <div class="answer-reveal">
+      <span class="mark">Mark 1</span> The probe emits short <strong>pulses of ultrasound</strong> (high-frequency sound waves above 20 000 Hz) into the body.<br>
+      <span class="mark">Mark 2</span> When pulses reach a <strong>boundary</strong> between tissues of different densities (e.g. muscle and kidney wall), some of the sound is <strong>reflected</strong> back as an echo; the rest continues deeper.<br>
+      <span class="mark">Mark 3</span> The probe detects the returning echoes and a computer records the <strong>time delay</strong> for each echo — a longer delay means the boundary is deeper in the body.<br>
+      <span class="mark">Mark 4</span> By processing the timing and strength of thousands of echoes, the computer builds up a <strong>detailed image</strong> of the internal structures on screen in real time.<br><br>
+      <em style="color:var(--muted)">💡 This is identical in principle to SONAR — both use reflected sound pulses and measure time delays to map what they can't see directly.</em>
+    </div>
+  </div>
+
+  <div class="question">
+    <div class="q-stem"><span class="q-num">31.</span><span>Compare a transverse wave and a longitudinal wave. In your answer, describe how the particles move in each, give a real-world example of each, and state which type sound is. <em style="color:var(--muted)">[4 marks]</em></span></div>
+    <textarea class="short-answer" placeholder="Write your answer here..."></textarea>
+    <button class="reveal-btn" onclick="toggleReveal(this)">👁 Reveal Model Answer</button>
+    <div class="answer-reveal">
+      <span class="mark">Mark 1</span> In a <strong>transverse wave</strong>, particles vibrate <strong>perpendicular</strong> (at right angles) to the direction of energy transfer. Example: a wave on a rope, or a water wave.<br>
+      <span class="mark">Mark 2</span> In a <strong>longitudinal wave</strong>, particles vibrate <strong>parallel</strong> (in the same direction) as energy transfer, creating alternating compressions and rarefactions.<br>
+      <span class="mark">Mark 3</span> Example of a longitudinal wave: <strong>sound</strong> travelling through air, water, or a solid.<br>
+      <span class="mark">Mark 4</span> Sound is a <strong>longitudinal</strong> wave — the air particles are pushed back and forth in the same direction as the wave travels, forming compressions and rarefactions.<br><br>
+      <em style="color:var(--muted)">💡 Memory tip: Longitudinal = "long" — particles move in the same direction as the long axis of travel.</em>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL SCORE -->
+<div class="final-score" id="finalScore">
+  <h2>🎮 GAME COMPLETE!</h2>
+  <div style="font-size:1rem;color:var(--muted);font-weight:700;margin-bottom:8px">Auto-scored points (Levels 1–4)</div>
+  <div class="final-breakdown" id="breakdownPills"></div>
+  <div class="rank-badge" id="rankBadge"></div>
+  <div class="final-msg" id="finalMsg"></div>
+  <button class="confetti-btn" onclick="launchConfetti()">🎉 Celebrate!</button>
+</div>
+
+</div><!-- end page-wrap -->
+
+<script>
+// ── State ─────────────────────────────────────────────────────
+const MAX_SCORE = 36; // L1:8 + L2:12 + L3:7 + L4:9
+let score = 0;
+const answered = new Set();
+const levelScores = {L1:0,L2:0,L3:0,L4:0};
+
+function updateScore() {
+  document.getElementById('scoreDisplay').textContent = score;
+}
+updateScore();
+
+function flashPoints(pts) {
+  if (pts === 0) return;
+  const el = document.createElement('div');
+  el.className = 'points-flash';
+  el.textContent = `+${pts}`;
+  el.style.color = 'var(--yellow)';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 900);
+}
+
+// ── SHOW WORKINGS ─────────────────────────────────────────────
+function showWorkings(question) {
+  const w = question.querySelector('.workings');
+  if (w) { w.style.display = 'block'; w.style.animation = 'fadeIn .4s ease'; }
+}
+
+// ── TRUE / FALSE ──────────────────────────────────────────────
+function checkTF(btn, selected, correct) {
+  const q = btn.closest('.question');
+  const id = q.dataset.id;
+  if (answered.has(id)) return;
+  answered.add(id);
+
+  const btns = q.querySelectorAll('.tf-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const isCorrect = selected === correct;
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    btns.forEach(b => {
+      if ((b.classList.contains('true-btn') && correct==='true') ||
+          (b.classList.contains('false-btn') && correct==='false')) b.classList.add('correct');
+    });
+  }
+
+  const fb = q.querySelector('.feedback');
+  fb.textContent = isCorrect ? '✅ Correct!' : '❌ Not quite — check the explanation below.';
+  fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+
+  showWorkings(q);
+
+  if (isCorrect) { score++; levelScores.L1++; flashPoints(1); }
+  updateScore();
+  checkCompletion();
+}
+
+// ── MULTIPLE CHOICE ───────────────────────────────────────────
+function checkMC(btn, selected, correct) {
+  const q = btn.closest('.question');
+  const id = q.dataset.id;
+  if (answered.has(id)) return;
+  answered.add(id);
+
+  const btns = q.querySelectorAll('.mc-btn');
+  btns.forEach(b => b.disabled = true);
+  const isCorrect = selected === correct;
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    btns.forEach(b => { if (b.querySelector('.opt-letter').textContent === correct) b.classList.add('correct'); });
+  }
+
+  const fb = q.querySelector('.feedback');
+  fb.textContent = isCorrect ? '✅ Correct! +2 points' : '❌ Not quite — see the explanation below.';
+  fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+
+  showWorkings(q);
+
+  if (isCorrect) { score += 2; levelScores.L2 += 2; flashPoints(2); }
+  updateScore();
+  checkCompletion();
+}
+
+// ── DRAG AND DROP ─────────────────────────────────────────────
+let draggedChip = null;
+
+document.querySelectorAll('.drag-chip').forEach(chip => {
+  chip.addEventListener('dragstart', e => {
+    draggedChip = e.target;
+    e.target.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', e.target.dataset.word);
+  });
+  chip.addEventListener('dragend', e => e.target.classList.remove('dragging'));
+});
+
+document.querySelectorAll('.drop-zone').forEach(zone => {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('over');
+    const existing = zone.querySelector('.drag-chip');
+    if (existing) {
+      existing.draggable = true;
+      document.getElementById('chipBank').appendChild(existing);
+      existing.addEventListener('dragstart', ev => { draggedChip = ev.target; ev.target.classList.add('dragging'); ev.dataTransfer.setData('text/plain', ev.target.dataset.word); });
+    }
+    if (!draggedChip) return;
+    draggedChip.classList.remove('dragging');
+    draggedChip.draggable = false;
+    zone.innerHTML = '';
+    zone.appendChild(draggedChip);
+    draggedChip = null;
+  });
+});
+
+// Touch support
+let touchChip = null;
+document.querySelectorAll('.drag-chip').forEach(chip => {
+  chip.addEventListener('touchstart', e => { touchChip = e.target; }, {passive:true});
+});
+document.addEventListener('touchmove', e => {
+  if (!touchChip) return;
+  e.preventDefault();
+  const t = e.touches[0];
+  document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('over'));
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  if (el && el.classList.contains('drop-zone')) el.classList.add('over');
+}, {passive:false});
+document.addEventListener('touchend', e => {
+  if (!touchChip) return;
+  const t = e.changedTouches[0];
+  document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('over'));
+  const el = document.elementFromPoint(t.clientX, t.clientY);
+  if (el && el.classList.contains('drop-zone')) {
+    const ex = el.querySelector('.drag-chip');
+    if (ex) document.getElementById('chipBank').appendChild(ex);
+    el.innerHTML = '';
+    el.appendChild(touchChip);
+    touchChip.draggable = false;
+  }
+  touchChip = null;
+});
+
+function checkDrag() {
+  if (answered.has('drag')) return;
+  const zones = document.querySelectorAll('.drop-zone');
+  let correct = 0, allFilled = true;
+  zones.forEach(zone => {
+    const chip = zone.querySelector('.drag-chip');
+    if (!chip) { allFilled = false; return; }
+    if (chip.dataset.word === zone.dataset.answer) {
+      correct++;
+      chip.style.borderColor = 'var(--green)'; chip.style.color = 'var(--green)';
+    } else {
+      chip.style.borderColor = 'var(--pink)'; chip.style.color = 'var(--pink)';
+      // Show correct answer
+      const label = zone.closest('.drop-row').querySelector('.drop-label');
+      label.style.color = 'var(--muted)';
+    }
+  });
+  if (!allFilled) {
+    const fb = document.getElementById('fb-drag');
+    fb.textContent = '⚠️ Place all 7 terms before checking!';
+    fb.className = 'feedback show wrong';
+    return;
+  }
+  answered.add('drag');
+  document.getElementById('dragCheckBtn').disabled = true;
+  score += correct; levelScores.L3 += correct;
+  if (correct > 0) flashPoints(correct);
+  updateScore();
+  const fb = document.getElementById('fb-drag');
+  fb.textContent = `You got ${correct}/7 correct! ${correct===7?'🎉 Perfect match!':correct>=5?'Nearly there — check the pink ones.':'Keep practising those definitions!'}`;
+  fb.className = 'feedback show ' + (correct >= 5 ? 'correct' : 'wrong');
+  checkCompletion();
+}
+
+// ── FILL IN BLANKS ────────────────────────────────────────────
+function checkBlanks() {
+  if (answered.has('blanks')) return;
+  answered.add('blanks');
+  const inputs = document.querySelectorAll('.blank-input');
+  let correct = 0;
+  inputs.forEach(inp => {
+    inp.disabled = true;
+    const val = inp.value.trim().toLowerCase();
+    const ans = inp.dataset.answer.toLowerCase();
+    const alts = (inp.dataset.alts || '').toLowerCase().split(',').filter(Boolean);
+    const ok = val === ans || alts.includes(val);
+    inp.classList.add(ok ? 'correct' : 'wrong');
+    if (!ok) inp.value = (inp.value || '(blank)') + '  ✗ → ' + inp.dataset.answer;
+    else correct++;
+  });
+  score += correct; levelScores.L4 += correct;
+  if (correct > 0) flashPoints(correct);
+  updateScore();
+  const fb = document.getElementById('fb-blanks');
+  fb.textContent = `${correct}/9 correct! ${correct===9?'🌟 Flawless!':correct>=7?'Great effort!':'Check the ✗ answers above.'}`;
+  fb.className = 'feedback show ' + (correct >= 6 ? 'correct' : 'wrong');
+  checkCompletion();
+}
+
+// ── REVEAL TOGGLE ─────────────────────────────────────────────
+function toggleReveal(btn) {
+  const reveal = btn.nextElementSibling;
+  reveal.classList.toggle('show');
+  btn.textContent = reveal.classList.contains('show') ? '🙈 Hide Answer' : '👁 Reveal Model Answer';
+}
+function toggleReveal(btn) {
+  const reveal = btn.nextElementSibling;
+  reveal.classList.toggle('show');
+  btn.textContent = reveal.classList.contains('show') ? '🙈 Hide Answer' : '👁 Reveal Full Working';
+}
+
+// ── COMPLETION ────────────────────────────────────────────────
+function checkCompletion() {
+  const required = ['tf1','tf2','tf3','tf4','tf5','tf6','tf7','tf8','mc1','mc2','mc3','mc4','mc5','mc6','drag','blanks'];
+  const done = required.filter(id => answered.has(id)).length;
+  if (done >= required.length) showFinal();
+}
+
+function showFinal() {
+  const el = document.getElementById('finalScore');
+  if (el.classList.contains('show')) return;
+  el.classList.add('show');
+
+  // Breakdown pills
+  const bp = document.getElementById('breakdownPills');
+  bp.innerHTML = `
+    <div class="breakdown-pill">⚡ L1: ${levelScores.L1}/8</div>
+    <div class="breakdown-pill">🧠 L2: ${levelScores.L2}/12</div>
+    <div class="breakdown-pill">🎯 L3: ${levelScores.L3}/7</div>
+    <div class="breakdown-pill">✏️ L4: ${levelScores.L4}/9</div>
+    <div class="breakdown-pill" style="color:var(--yellow);border-color:rgba(255,233,77,.4)">Total: ${score}/${MAX_SCORE}</div>
+  `;
+
+  const pct = score / MAX_SCORE;
+  const badge = document.getElementById('rankBadge');
+  const msg = document.getElementById('finalMsg');
+  if      (pct >= 0.9)  { badge.textContent='⭐ S RANK — Sound Master!';   badge.className='rank-badge rank-s'; msg.textContent='Absolutely outstanding. You know this topic cold.'; }
+  else if (pct >= 0.75) { badge.textContent='🔵 A RANK — Sharp Thinker';   badge.className='rank-badge rank-a'; msg.textContent='Excellent work — just a couple of gaps to tighten up.'; }
+  else if (pct >= 0.55) { badge.textContent='🟢 B RANK — Getting There';   badge.className='rank-badge rank-b'; msg.textContent='Solid effort. Go back and review the questions you missed.'; }
+  else                  { badge.textContent='💜 C RANK — Keep Practising'; badge.className='rank-badge rank-c'; msg.textContent="Don't worry — revisit the levels and the explanations. You'll get there!"; }
+
+  setTimeout(() => el.scrollIntoView({behavior:'smooth',block:'center'}), 200);
+}
+
+// ── CONFETTI ──────────────────────────────────────────────────
+function launchConfetti() {
+  const colors = ['#ffe94d','#00e5ff','#ff4da6','#39ff85','#ff7c2a','#c084fc'];
+  for (let i = 0; i < 100; i++) {
+    const el = document.createElement('div');
+    const color = colors[Math.floor(Math.random()*colors.length)];
+    el.style.cssText = `position:fixed;z-index:9999;pointer-events:none;
+      width:${6+Math.random()*10}px;height:${6+Math.random()*10}px;
+      background:${color};border-radius:${Math.random()>.5?'50%':'3px'};
+      left:${Math.random()*100}vw;top:-20px;`;
+    const duration = 1.2 + Math.random() * 2;
+    const rotate = 360 + Math.random() * 720;
+    el.animate([
+      {transform:`translateY(0) rotate(0deg)`,opacity:1},
+      {transform:`translateY(${70+Math.random()*40}vh) rotate(${rotate}deg)`,opacity:0}
+    ],{duration:duration*1000,easing:'ease-in',fill:'forwards'});
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), duration * 1000 + 100);
+  }
+}
+</script>
+</body>
+</html>
